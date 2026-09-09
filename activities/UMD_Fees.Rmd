@@ -33,6 +33,7 @@ umd_fees_pct <- umd_fees |> mutate(pct_change = (`Fall 2026`- `Fall 2021`)/`Fall
 
 Write a few sentences about what you found in those percentages. What's the story here? What questions do you have?
 
+When the class initially looked at the biggest student fee changes from Fall 2021 to Fall 2026 we all agreed that the biggest increase was in recreation services, however, the percentage change shows that the biggest increase in fees actually comes from student sustainability increasing by 150%. This was surprising because we definitely compared only two numbers instead of looking at growth overtime. I also actually wrote a story for the Diamondback last semester about the Sustainability fee and not only has it increased much overtime but also the graduate students are trying to implement a higher fee. I believe the story here is, Why has the Sustainability increased so much overtime? How are students benefiting from this fee? 
 
 
 
