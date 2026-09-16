@@ -48,7 +48,7 @@ crimes_with_rates <- crimes |> mutate(violent_rate = violent_crime_total/populat
 
 Write a few sentences about what you found in the data. What years had the highest crime rates? What years had the lowest crime rates? Does the pattern match your expectations? What might explain some of the results you found?
 
-
+After looking at the data and discussing in class I I noticed that after financial crisis in 2008, violent crime went down. This surprised me I would assume that financial crisis would make people angrier and more susceptible to commit violent crime. The lowest crime rate was recorded last in 2020, and was most likely due to the pandemic which makes sense since people weren't allowed be in major public spaces and social distancing. But I am wondering why people were so violent in the 90s especially 1992, was this just a generational thing? Gang violence? 
 
 
 When you are done, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
