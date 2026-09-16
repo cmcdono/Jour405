@@ -39,7 +39,7 @@ team_aces |> mutate(percentile = ntile(total_aces, 100))
 
 Write a couple of sentences that puts Maryland into context with the other teams in the dataset. You can do some Internet research to help with this.
 
-
+Maryland ranks in the 95th percentile nationally for total aces, with 223, putting them ahead of about  95% of Division 1 women volleyball programs. Maryland competes in the Big Ten, one of the toughest conferences in the county which means they probably have more matches and chances to get more aces, than teams in a smaller conference would be able to. 
 
 When you are done, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
 
