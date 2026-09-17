@@ -72,3 +72,20 @@ The decline in Maryland's largest city stands out in a statewide dataset compari
 ### Task 9: Save Your Work and Put it on GitHub
 
 Save this notebook, then commit it to your local repository. Push the changes to your GitHub repository and submit the URL for this file in ELMS.
+
+### Task 10: 
+```{r}
+ md_cities_percentiles <- md_cities_rates |> 
+  mutate(percentile = ntile(violent_rate_2020, 100)) 
+```
+- There are 10 cities above the 90th percentile 
+
+```{r}
+md_cities_percentiles |> summarize(iqr_violent_2020 = IQR(violent_rate_2020)) 
+
+```
+
+Do the results change your best story idea from the previous assignment? Why or why not?
+
+The results showing the IQR and percentile do not change my story idea. Baltimore ranks in the top 10 cities statewide for violent crime rate, which is consistent with the idea in my original lede and nutgraf about Baltimore's crime trends being significant given it's size and crime levels relative to Maryland cities. The IQR range is 42 and Baltimore falls much higher, which supports that Baltimore's crime decline is notable in the context of a larger, high-crime city. 
+
