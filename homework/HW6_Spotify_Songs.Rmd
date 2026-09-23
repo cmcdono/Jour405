@@ -7,11 +7,13 @@ In this assignment, you will be working with a dataset of songs played on Spotif
 ### Task 1: Load the tidyverse
 
 ```{r}
+library(tidyverse)
 ```
 
 ### Task 2: Load the Spotify Songs dataset from https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/spotify_2020.csv
 
 ```{r}
+spotify <- read_csv("https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/spotify_2020.csv")
 ```
 
 ### Task 3: Calculate the mean and standard deviation of the danceability scores
@@ -19,6 +21,7 @@ In this assignment, you will be working with a dataset of songs played on Spotif
 Write code to calculate the mean standard deviation of the danceability scores in the Spotify dataset. Display those.
 
 ```{r}
+spotify |> summarize(mean = mean(danceability), sd = sd(danceability))
 ```
 
 ### Task 4: Create a histogram of the danceability scores
@@ -26,6 +29,9 @@ Write code to calculate the mean standard deviation of the danceability scores i
 Write code to create a histogram of the danceability scores in the Spotify dataset, based on the example we did in class.
 
 ```{r}
+spotify |> 
+  ggplot() + 
+  geom_histogram(aes(x = danceability), binwidth = 0.05)
 ```
 
 ### Task 5: Add a line to the histogram for the mean danceability score
@@ -33,11 +39,19 @@ Write code to create a histogram of the danceability scores in the Spotify datas
 Write code to add a vertical line to the histogram for the mean danceability score, based on the example in class.
 
 ```{r}
+spotify |> 
+  ggplot() + 
+  geom_histogram(aes(x = danceability), binwidth = 0.05) +
+  geom_vline(aes(xintercept = mean(danceability)), color = "red", linetype = "dashed", linewidth = 1)
 ```
 
 ### Task 6: Describe our results
 
 Write a few sentences about the distribution of danceability scores in the Spotify dataset. Is it a normal distribution, or is it skewed in one direction? What does the mean and distribution tell us about the songs in the dataset?
+
+The dance ability scores are not normal distribution. They are skewed to the left. Most songs are clustered between 0.5 and 0.85, and the tallest bar is about 0.75, but a long thin curve stretches down toward zero. 
+
+The mean and the shape of the distribution tells us that most of the songs released on Spotify in 2020 were fairly danceable. The standard deviation is about 0.16, very few songs  score below 0.25, and the ones that do are not popular. The lowest score, 0.0, belongs to a white noise track, and the highest scores near 0.97 are hip-hop and pop tracks. From a journalistic standpoint, the typical 2020 song leaned danceable and the low-scoring ones were not actual "songs." So it's important to go through the the actual song list to compare the differences to better explain to readers the distribution. 
 
 ### Task 7: Save Your Work and Put it on GitHub
 
