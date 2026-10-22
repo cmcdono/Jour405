@@ -9,7 +9,7 @@ Your editor wants to know what a "typical" month of car thefts looks like in Pri
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-# LOAD THE TIDYVERSE
+library(tidyverse)
 ```
 
 ### Task 2: Load the Prince George's county crime data
@@ -29,7 +29,7 @@ glimpse(car_thefts)
 
 We'll make a line chart using geom_line() to try and illustrate any trend over time. What's your initial reaction to the change in car thefts? Is there a trend? If your editor asked you "how many car thefts happen in a typical month?", what would you say based on this chart alone?
 
-PUT ANSWERS HERE
+Car thefts have gone down over time, from 611 in July 2023 to 211 in February 2026. The drop doesn't appear very steady, thefts rose again few times, but each rise peaked lower than the last. Thefts also tend to dip in the late winter. Based on the chart alone, I'd day a typical month has about 250 to 450 car thefts. recent month have mostly been under 300, but I could only give a rough answer from this chart. 
 
 ```{r}
 
@@ -60,9 +60,9 @@ We've got a small number of months, so we need to quantify the uncertainty aroun
 theft_summary <- car_thefts |>
   summarize(
     mean_thefts = mean(total),
-    sd_thefts = sd(REPLACE_ME),
+    sd_thefts = sd(total),
     months = n(),
-    se_thefts = sd_thefts / sqrt(REPLACE_ME),
+    se_thefts = sd_thefts / sqrt(months),
     margin_error = qt(0.975, df = months - 1) * se_thefts
   )
 
@@ -73,7 +73,7 @@ theft_summary
 
 **Answer this question:** Explain in your own words what the margin of error tells us here. If you were writing a story, how would you use this number? For example, how would you complete this sentence: "Prince George's County averages about ___ car thefts per month, plus or minus ___."
 
-PUT ANSWERS HERE
+The margin of error tells us how much our average could be off. our average is about 376 car thefts per month, and the margin of error is about 34. so the true monthly average is likely somewhere between about 341 and 410. In a story, I would write: "Prince George's County averages about 376 car thefts per month, plus or minus 34." I would also be careful using this number, because ccar thefts have dropped over time and recent months have mostly been under 300. 
 
 ### Task 5: Build the confidence interval
 
@@ -83,8 +83,8 @@ Now let's turn the margin of error into a full confidence interval — the range
 
 theft_summary <- theft_summary |>
   mutate(
-    ci_lower = mean_thefts - REPLACE_ME,
-    ci_upper = mean_thefts + REPLACE_ME
+    ci_lower = mean_thefts - margin_error,
+    ci_upper = mean_thefts + margin_error
   )
 
 theft_summary |>
@@ -94,13 +94,13 @@ theft_summary |>
 
 **Answer this question:** If a county official claimed "car thefts are down to about 300 per month," does your confidence interval support that claim? What about a claim of 350 per month? Explain how the confidence interval helps you evaluate each claim.
 
-PUT ANSWERS HERE
+The claim of 300 car thefts per month is not supported by the confidence interval, because 300 is below the range of 341 to 410. The claim of 350 per month is supported because 350 falls inside the range. the confidence interval helps by showing which numbers are reasonable for the average. If a claim falls inside the range, the data backs it up. 
 
 ### Task 6: Visualize the data with the confidence interval
 
 Let's make a chart showing the data with the mean and the 95% confidence interval. Does this change anything about your answer from Task 3?
 
-PUT ANSWERS HERE
+The chart does not change my answer from Task 3. It make the downward trend clearer. Most of the early month, especially in 2023 and 2024, are above the shaded confidence interval, and most of the recent months are below it.That shows the average  of about 376 doesn't describe a typical month very well, since car thefts have been steadily dropping. 
 
 ```{r}
 # Make a chart with the mean and CI
@@ -133,7 +133,7 @@ In class we learned that MoE = 1/√n × 100 as a quick approximation for polls.
 hypothetical_summary <- tibble(
   mean_thefts = theft_summary$mean_thefts,
   sd_thefts = theft_summary$sd_thefts,
-  months = REPLACE_ME,
+  months = 40,
   se_thefts = sd_thefts / sqrt(months),
   margin_error = qt(0.975, df = months - 1) * se_thefts,
   ci_lower = mean_thefts - margin_error,
@@ -155,7 +155,7 @@ comparison
 
 **Answer this question:** How did the margin of error and confidence interval change? What does this tell you about the tradeoff between having more data and being able to make precise claims? If you were covering crime trends, how many months of data would you want before writing a definitive story?
 
-PUT ANSWERS HERE
+With 40 months instead of 32, the margin of error dropped from about 34 to about 30. The confidence interval got narrower, going from 341-410 to 345-406. The shows more data makes our estimate more accurate, so we can make stronger claims. But adding 8 months only shrank the margin of error by about 4, so each extra month helps less and less. More data also means looking further back in time, and since thefts have been dropping the older months could make the average less accurate. If i were writing a definitive story id want at least three years of data so i could maybe see seasonal patterns.  
 
 ### Task 8: Reporting with uncertainty
 
@@ -165,7 +165,10 @@ Based on everything you've calculated, answer the following:
 
 2. Your editor says "Just tell me if car thefts are going up or down." Using only the confidence interval (no significance testing yet), what's the most accurate answer you can give? What would you need to do next to answer that question more definitively?
 
-PUT ANSWERS HERE
+HL: Car thefts in Prince George's County have dropped since 2023, data shows. 
 
+Lede: Car thefts in Prince George's County have generally declined since mid-2023, falling from 611 in July 2023 to 211 in February 2026, according to county crime data. The county averages about 376 car thefts per month over that period, plus or minus 34, but most recent months have been under 300. 
+
+Using the confidence interval, car thefts appear to be going down. Most early months were above the range of 341 to 410, and most recent months were below it. But the interval only describes the overall average. so it cant prove the drop is accurate. To be more certain, id compare the early and recent months to see where they overlap. 
 
 When you are finished, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
