@@ -58,4 +58,6 @@ weekly_wmata |>
 
 **Answer this question:** Describe the trend you see. Is ridership going up, down, or staying flat? What are the big dips, and what might explain them? What would you want to know before writing a story about Metro weekly ridership trends?
 
-ANSWER HERE
+Ridership is going up slightly overall, from about 5 million readers a week in early 2025 to about 5.3 million by fall 2026, but it jumps around a lot from week to week. 
+
+The biggest dips are in early January 2025, around Thanksgiving and Christmas 2025, and in late January 2026, which is the lowest point. The holiday dips are likely because people aren't commuting. The late January 2026 drop could be due to winter weather. Before writing a story. I'd want to know how WMATA counts riders, how rail and bus ridership compare, and what causes the biggest drops. 
