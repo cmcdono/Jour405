@@ -1,6 +1,6 @@
 ---
 title: "HW10: Significance Testing & Effect Size"
-name: REPLACE WITH YOUR NAME
+name: Caroline McDonough 
 ---
 
 You previously calculated the mean, margin of error and confidence interval for monthly car thefts in Prince George's County. Your editor now wants to know: it _looks_ like car thefts are decreasing lately, but is that change real, and how big is it? In this assignment, you'll use significance testing and effect size to answer those questions. Load the tidyverse and the data to get started.
@@ -10,6 +10,7 @@ You previously calculated the mean, margin of error and confidence interval for 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 # LOAD THE TIDYVERSE
+library(tidyverse) 
 ```
 
 ```{r}
@@ -24,9 +25,9 @@ car_thefts <- read_csv("https://raw.githubusercontent.com/dwillis/jour405/refs/h
 
 We'll split the monthly data into two halves, and then ask whether there's a statistically significant difference between these periods. To do that, we'll use a t-test with our alpha at 0.05. First, fill in the hypotheses, then replace the REPLACE_ME values in the code.
 
-**Null Hypothesis:** REPLACE_ME
+**Null Hypothesis:** There is no difference in the average number of monthly car thefts in PG County between the first and second half of the data. 
 
-**Alternative Hypothesis:** REPLACE_ME
+**Alternative Hypothesis:** There is a difference in the average number of monthly car thefts in PG County between the first and second half of the data. 
 
 ```{r}
 
@@ -46,7 +47,7 @@ t_test_periods
 
 **Answer this question:** What is the p-value? Is it less than 0.05? Can we reject the null hypothesis? What does this tell your editor?
 
-PUT ANSWERS HERE
+The p-value is about 0.0002, which is far less than 0.05 so we can reject the null hypothesis. This tells my editor that the drop in monthly car thefts, from about 439 in the first half of the data to about 312 in the second half, is real and very unlikely to be due to chance.
 
 ### Task 3: Visualize the comparison (4 points)
 
@@ -57,11 +58,11 @@ Let's see the two periods side by side with their confidence intervals. Replace 
 period_summary <- car_thefts |>
   group_by(period) |>
   summarize(
-    mean_thefts = mean(REPLACE_ME),
+    mean_thefts = mean(total),
     sd_thefts = sd(total),
     months = n(),
     se_thefts = sd_thefts / sqrt(months),
-    margin_error = qt(0.975, df = REPLACE_ME - 1) * se_thefts,
+    margin_error = qt(0.975, df = months - 1) * se_thefts,
     ci_lower = mean_thefts - margin_error,
     ci_upper = mean_thefts + margin_error
   )
@@ -85,7 +86,7 @@ ggplot(aes(x = period, y = mean_thefts, fill = period)) +
 
 **Answer this question:** Look at the error bars (confidence intervals) on the chart. Do they overlap? What does that tell you about whether the difference between the two periods is real?
 
-PUT ANSWERS HERE
+no the error bars don't overlap, the first half's confidence interval runs from about 398 to 480 thefts per month, while the second half's runs from about 279 to 346. since even the high end of the second half is well below the low end of the first half, the drop in car thefts is very likely real and not due to chance. 
 
 ### Task 4: Calculate the effect size (5 points)
 
@@ -106,11 +107,11 @@ second_half_stats <- period_summary |> filter(period == "Second Half")
 pooled_sd <- sqrt(
   ((first_half_stats$months - 1) * first_half_stats$sd_thefts^2 +
    (second_half_stats$months - 1) * second_half_stats$sd_thefts^2) /
-  (first_half_stats$months + second_half_stats$months - REPLACE_ME)
+  (first_half_stats$months + second_half_stats$months - 2)
 )
 
 # Calculate Cohen's d
-cohens_d <- (first_half_stats$mean_thefts - REPLACE_ME) / pooled_sd
+cohens_d <- (first_half_stats$mean_thefts - second_half_stats$mean_thefts) / pooled_sd
 
 # Interpret it
 effect_label <- case_when(
@@ -131,7 +132,7 @@ tibble(
 
 **Answer this question:** How would you describe this effect size? Compare it to the effect sizes we calculated in class (the response times activity had a small effect, the housing prices activity had a medium effect). What does a large effect size mean for the story you'd write about car thefts?
 
-PUT ANSWERS HERE
+The effect size is large, much bigger than the small effect for response times (0.28)or the medium effect for housing prices(0.61). Unlike those cases, the drop in car thefts, about 127 fewer per month on average, is both statistically significant and big enough to matter in practical terms. That means i would probably pretty confidently write a story saying car thefts in PG county has dropped, though I would still need to report on what's driving the decline. 
 
 ### Task 5: Putting it all together (7 points)
 
@@ -139,10 +140,13 @@ You now have three pieces of evidence: the confidence intervals from last week, 
 
 1. In Part 1, your editor asked "just tell me if car thefts are going up or down". Now you have significance testing. Write 2-3 sentences telling your editor the answer, using all three pieces of evidence (CI, p-value, and effect size).
 
-PUT ANSWERS HERE
+car thefts in PG County are going down, the average fell from about 439 per month in the first half of the data to about 312 in the second half, and the confidence interval for the two period don't overlap. The drop is statistically significant, so it's unlikely to be due to chance. the effect size is also large, (cohen'sd=1.79), which means this isn't just a technically real chance but a great decline of roughly 127 thefts fewer per month. 
 
 2. Write a headline and a 2-3 sentence lede for a story about car thefts in Prince George's County. Unlike the response times story from class (where the effect was small and the headline needed to be cautious), this is a case where the data strongly supports a clear conclusion. Your writing should reflect that — but still note the limitations (correlation vs. causation, what else might explain the decline).
 
-PUT ANSWERS HERE
+HL: Car thefts in Prince George's County drop fall sharply, from about 349 to 312 a month on average. 
+
+Car thefts in Prince George's County have fallen sharply, from an average of about 439 a month between mid-2023 and fall 2024 to about 312 a month since then, according yo an analysis of county data. The decline of roughly 127 thefts per month is both statistically significant and large, making it unlikely to be a fluke. However, the numbers alone don't explain why thefts are falling, and factors such as policing changes, or broader regional crime trends could all be a factor. 
+
 
 When you are finished, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
