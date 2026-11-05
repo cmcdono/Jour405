@@ -1,6 +1,6 @@
 ---
 title: "HW11: Education Level and Survey Weighting"
-author: "Your Name Here"
+author: "Caroline McDonough"
 ---
 
 ```{r setup, include=FALSE}
@@ -46,19 +46,19 @@ ggplot(nonvoters_data, aes(x = weight)) +
 
 **Question 1:** Most weights cluster near 1.0, but some are much higher or lower. What does a weight of 0.2 tell you about that respondent's group in the sample? What about a weight of 3.5? Why might a pollster assign such extreme weights?
 
-ANSWER HERE
+A weight of 0.2 means the respondent's group is heavily over sampled, so their answers counts as less of a person. A weight of 3.5 means their group is under sampled, so their answer counts more than just one person A pollster might assign extreme weights when some groups are much more or less likely to respond to surveys than others, and the weights bring the sample back in line with the population as a whole. 
 
 ## Task 2: Education Distribution in the Sample (3 points)
 
 ```{r education-distribution}
 nonvoters_data |>
-  count(REPLACE_ME) |>
+  count(educ) |>
   mutate(percentage = round(n / sum(n) * 100, 1))
 ```
 
 **Question 2:** College graduates are overrepresented in most surveys. Does that appear to be true here? Why might college graduates be more likely to respond to a survey than people with less education?
 
-ANSWER HERE
+yes college graduates seem to be over represented they make up about 39.9% of the sample, even though people with a high school education or less are the largest group in the adult population. college graduates may be more likely to respond because they tend to be more interested in politics and civic issues, trust research more and want to be a part of it, and are easier for pollsters to reach. 
 
 ## Task 3: Unweighted Voting Intentions by Education (4 points)
 
@@ -87,7 +87,7 @@ unweighted_summary
 
 **Question 3:** Based only on these unweighted numbers, write a one-sentence headline for a story about education and voting intentions.
 
-ANSWER HERE
+93% of college grads plan to vote, far more than those with a high school education or less. 
 
 ## Task 4: Weighted Voting Intentions by Education (2 points)
 
@@ -97,7 +97,7 @@ Now apply the weights. Instead of counting respondents, we sum their weights —
 weighted_by_education <- nonvoters_data |>
   filter(!is.na(Q21), Q21 > 0, !is.na(educ)) |>
   group_by(educ, Q21) |>
-  summarize(weighted_count = sum(REPLACE_ME), .groups = "drop_last") |>
+  summarize(weighted_count = sum(weight), .groups = "drop_last") |>
   mutate(weighted_total = sum(weighted_count),
          weighted_percentage = weighted_count / weighted_total * 100) |>
   ungroup()
@@ -125,7 +125,7 @@ viz_data <- bind_rows(
   weighted_by_education |>
     filter(Q21 == 1) |>
     mutate(Type = "Weighted",
-           percentage = REPLACE_ME) |>
+           percentage = weighted_percentage) |>
     select(Type, educ, percentage)
 )
 
@@ -145,7 +145,7 @@ ggplot(viz_data, aes(x = educ, y = percentage, fill = Type)) +
 
 **Question 4:** Which education group shows the biggest shift between weighted and unweighted results? In percentage points, how large is that shift? Does weighting change the story, or does it just change the exact numbers?
 
-ANSWER HERE
+The "high school or less" group shows the biggest shift, the share planning to vote dropped from 73.5% unweighted to 70.8% weighted, a decrease of about 2.7 percentage points. college graduates barely change by 0.1 percent, and "some college" drops only 0.6 points. weighting doesnt change the story, since college graduates are still far more likely to plan to vote, but it makes the education gap a little wider. 
 
 ## Task 6: The UMD Belonging Survey (8 points)
 
@@ -153,4 +153,8 @@ Earlier in class this week, we looked at the 2024 UMD Belonging and Community Su
 
 **Question 5:** Based on what you've learned in this assignment, write 2-3 paragraphs as if you were a reporter evaluating the UMD survey before writing a story based on it. Address: (1) what the lack of weighting means for how you'd use the results, (2) which groups in the UMD survey appeared most underrepresented based on Figures 1 and 2, and (3) what question you would ask the survey's authors before publishing.
 
-ANSWER HERE
+because the umd survey wasn't weighted, its results only reflect the 23% of people who chose to respond, not the whole campus. groups that responded more carry too much influence, so I would describe findings as what survey respondents said rather than what umd students feel. 
+
+based on figured 1 and 2, men were the most underrepresented group, making up about 50% of the umd population but only 38% of the sample. hispanic and black community members were also underrepresented, so the results may not reflect their experiences of belonging. 
+
+before publishing, I would ask the authors why they didn't weight the results and whether weighting would change the main findings. if the story changes with weights, the unweighted numbers should not drive a headline. 
