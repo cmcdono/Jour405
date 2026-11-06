@@ -1,0 +1,127 @@
+---
+title: "Equity in Big Ten Athletics: Final Project"
+author: Caroline McDonough 
+output: html_document
+---
+
+## Load the libraries
+
+```{r}
+library(tidyverse)
+library(readxl)
+```
+
+## The Big Ten schools
+
+I'm filtering by each schools ID number (unitid) instead of its name, because names aren't consistent in federal data. Penn State used a different ID (495767) in 2020-21 and 2021-22, so I included both of its IDs.
+
+```{r}
+big_ten <- tribble(
+  ~unitid, ~school,
+  163286, "Maryland",
+  145637, "Illinois",
+  151351, "Indiana",
+  153658, "Iowa",
+  170976, "Michigan",
+  171100, "Michigan State",
+  174066, "Minnesota",
+  181464, "Nebraska",
+  147767, "Northwestern",
+  204796, "Ohio State",
+  209551, "Oregon",
+  214777, "Penn State",
+  495767, "Penn State",
+  243780, "Purdue",
+  186380, "Rutgers",
+  110662, "UCLA",
+  123961, "USC",
+  236948, "Washington",
+  240444, "Wisconsin"
+)
+```
+
+## Load the data
+
+I downloaded "Data for academic year" for each of five years from https://ope.ed.gov/athletics/#/datafile/list. Each year comes as a zip file, so I can't load it straight from the web I saved the two Excel files from each year in my data folder. The files don't have a year column, so I add one to each.
+
+Sport-level files (one row for each sport at each school):
+
+```{r}
+sports_2020 <- read_excel("data/sports_2020-21.xlsx") |> mutate(year = "2020-21")
+sports_2021 <- read_excel("data/sports_2021-22.xlsx") |> mutate(year = "2021-22")
+sports_2022 <- read_excel("data/sports_2022-23.xlsx") |> mutate(year = "2022-23")
+sports_2023 <- read_excel("data/sports_2023-24.xlsx") |> mutate(year = "2023-24")
+sports_2024 <- read_excel("data/sports_2024-25.xlsx") |> mutate(year = "2024-25")
+
+sports <- bind_rows(sports_2020, sports_2021, sports_2022, sports_2023, sports_2024) |>
+  filter(unitid %in% big_ten$unitid)
+```
+
+School-level files (one row for each school):
+
+```{r}
+school_2020 <- read_excel("data/school_2020-21.xlsx") |> mutate(year = "2020-21")
+school_2021 <- read_excel("data/school_2021-22.xlsx") |> mutate(year = "2021-22")
+school_2022 <- read_excel("data/school_2022-23.xlsx") |> mutate(year = "2022-23")
+school_2023 <- read_excel("data/school_2023-24.xlsx") |> mutate(year = "2023-24")
+school_2024 <- read_excel("data/school_2024-25.xlsx") |> mutate(year = "2024-25")
+
+schools <- bind_rows(school_2020, school_2021, school_2022, school_2023, school_2024) |>
+  filter(unitid %in% big_ten$unitid)
+```
+
+## Examining the data
+
+```{r}
+schools |> count(year)
+glimpse(sports)
+```
+
+##What does it contain? 
+
+The data comes from the U.S. department of Education's Equity in Athletics data. Every college that recieves federal student aid and has sports teams has to report it each year. There are two files for each year 2020-2025. 
+
+The sports file has one row for each sport at each school. it shows the number of athletes on the mens and womens teams, and how much each team spent and earned. 
+
+the school file has one row for each school. it has totals for the whole athletic department, including coaches salaries, recruiting spending, scholarships, and an athlete count that counts two-sport athletes only one. 
+
+After filtering to the 18 Big 10 schools, the sport data has 1,274 rows and the school data has 90. 
+
+## What time period does it cover? 
+
+Five school years, 2020-2025. Each school reports for a 12-month period it chooses. 
+
+## Which columns are most important? 
+
+- The most important columns I think will be the EXPENSE_MENALL and EXPENSE_WOMENALL which is the total spending on mens and womens team
+
+## What is missing? 
+
+spending that isnt assigned to men or women like facilities they both use, scholarships by sport, they are combined not separated. 
+
+## Questions I have
+
+1. I know you said to possibly leave out the covid year, should I skip that year and include a previous year instead or keep it to four? 
+
+# Football
+
+football is its own row in the sports file so I will plan to leave it out
+
+this would be the correct code right? 
+```{r}
+sports |> filter(Sports != "Football")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
