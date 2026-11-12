@@ -4,6 +4,30 @@ author: Caroline McDonough
 output: html_document
 ---
 
+##The tests I could run 
+
+**Main question:** Do Big 10 schools spend more per athlete on men's sports than women's sports? 
+
+I plan to use *spending per athlete*, so schools with more teams dont look bigger just because they have more athletes. I'll run each one with and without football like you suggested, and save the no-football data seperatley. 
+
+
+1. *Paired t-test* - test whether schools spend more per male athlete than per female athlete. 
+
+2. *Z-score* - show how far UMD's gap is from the Big Ten average. 
+
+3. *With vs. Without football* - see how much the gap shrinks when football is taken out. 
+
+4. *Line chart* - show the gap each year from 2021-22 to 2024-25 to see if it's growing. 
+5. not sure if this counts as a test but: 
+*averages(mean and median)* - find the average gap in spending between men's and womens spending per athlete. 
+
+also maybe histograms?? showing the 18 schools gaps spread out, comparing umd to the rest. 
+
+- since I have all 18 schools and not a sample, would t -tests still work? 
+
+
+
+
 ## Load the libraries
 
 ```{r}
